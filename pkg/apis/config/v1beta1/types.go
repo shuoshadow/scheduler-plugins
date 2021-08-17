@@ -84,6 +84,13 @@ const (
 	SignalFx                MetricProviderType = "SignalFx"
 )
 
+type CalculateType string
+
+const (
+	Standard CalculateType = "std"
+	Average CalculateType = "avg"
+)
+
 // Denote the spec of the metric provider
 type MetricProviderSpec struct {
 	// Types of the metric provider
@@ -139,4 +146,23 @@ type NodeResourceTopologyMatchArgs struct {
 	KubeConfigPath *string  `json:"kubeconfigpath,omitempty"`
 	MasterOverride *string  `json:"masteroverride,omitempty"`
 	Namespaces     []string `json:"namespaces,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +k8s:defaulter-gen=true
+
+// NodeActualLoadArgs holds arguments used to configure NodeActualLoad plugin.
+type NodeActualLoadArgs struct {
+	metav1.TypeMeta `json:",inline"`
+
+	// Metric Provider specification when using load watcher as library
+	MetricProvider MetricProviderSpec `json:"metricProvider,omitempty"`
+	// Address of load watcher service
+	WatcherAddress *string `json:"watcherAddress,omitempty"`
+	// calculate type : avg or std
+	CalculateType CalculateType `json:"calculateType,omitempty"`
+	// real cpu rate
+	TargetCpuRate float64 `json:"targetCpuRate,omitempty"`
+	// real memory rate
+	TargetMemoryRate float64 `json:"targetMemoryRate,omitempty"`
 }

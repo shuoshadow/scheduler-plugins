@@ -84,6 +84,13 @@ const (
 	SignalFx                MetricProviderType = "SignalFx"
 )
 
+type CalculateType string
+
+const (
+	Standard CalculateType = "std"
+	Average CalculateType = "avg"
+)
+
 // Denote the spec of the metric provider
 type MetricProviderSpec struct {
 	// Types of the metric provider
@@ -142,4 +149,22 @@ type NodeResourceTopologyMatchArgs struct {
 
 	// Namespaces to be considered by NodeResourceTopologyMatch plugin
 	Namespaces []string
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// NodeActualLoadArgs holds arguments used to configure NodeActualLoad plugin.
+type NodeActualLoadArgs struct {
+	metav1.TypeMeta
+
+	// Metric Provider to use when using load watcher as a library
+	MetricProvider MetricProviderSpec
+	// Address of load watcher service
+	WatcherAddress string
+	// calculate type : avg or std
+	CalculateType CalculateType
+	// real cpu rate
+	TargetCpuRate float64
+	// real memory rate
+	TargetMemoryRate float64
 }

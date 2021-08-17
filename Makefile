@@ -17,7 +17,9 @@ COMMONENVVAR=GOOS=$(shell uname -s | tr A-Z a-z)
 BUILDENVVAR=CGO_ENABLED=0
 
 LOCAL_REGISTRY=localhost:5000/scheduler-plugins
+OPS_REGISTRY=hub.haoduo.vip/ops
 LOCAL_IMAGE=kube-scheduler:latest
+OPS_IMAGE=haoduo-scheduler:latest
 LOCAL_CONTROLLER_IMAGE=controller:latest
 
 # RELEASE_REGISTRY is the container registry to push
@@ -75,6 +77,10 @@ build-scheduler.arm64v8: autogen
 local-image: clean
 	docker build -f ./build/scheduler/Dockerfile --build-arg ARCH="amd64" --build-arg RELEASE_VERSION="$(RELEASE_VERSION)" -t $(LOCAL_REGISTRY)/$(LOCAL_IMAGE) .
 	docker build -f ./build/controller/Dockerfile --build-arg ARCH="amd64" -t $(LOCAL_REGISTRY)/$(LOCAL_CONTROLLER_IMAGE) .
+
+.PHONY: ops-image
+ops-image: clean
+	docker build -f ./build/scheduler/Dockerfile --build-arg ARCH="amd64" --build-arg RELEASE_VERSION="$(RELEASE_VERSION)" -t $(OPS_REGISTRY)/$(OPS_IMAGE) .
 
 .PHONY: release-image.amd64
 release-image.amd64: clean
