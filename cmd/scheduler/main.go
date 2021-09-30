@@ -20,6 +20,7 @@ import (
 	"math/rand"
 	"os"
 	"sigs.k8s.io/scheduler-plugins/pkg/nodeactualload"
+	"sigs.k8s.io/scheduler-plugins/pkg/podcountbynode"
 	"time"
 
 	"k8s.io/component-base/logs"
@@ -57,6 +58,7 @@ func main() {
 		app.WithPlugin(qos.Name, qos.New),
 		// by sunshuo
 		app.WithPlugin(nodeactualload.Name, nodeactualload.New),
+		app.WithPlugin(podcountbynode.Name, podcountbynode.New),
 	)
 
 	// TODO: once we switch everything over to Cobra commands, we can go back to calling

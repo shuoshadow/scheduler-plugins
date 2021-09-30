@@ -88,8 +88,14 @@ type CalculateType string
 
 const (
 	Standard CalculateType = "std"
-	Average CalculateType = "avg"
+	Average  CalculateType = "avg"
 )
+
+type PodCountLimitSpec struct {
+	NodeLabels   map[string]string
+	PodNamespace string
+	Count        int
+}
 
 // Denote the spec of the metric provider
 type MetricProviderSpec struct {
@@ -168,3 +174,14 @@ type NodeActualLoadArgs struct {
 	// real memory rate
 	TargetMemoryRate float64
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// PodCountByNodeArgs holds arguments used to configure PodCountByNode plugin.
+type PodCountByNodeArgs struct {
+	metav1.TypeMeta
+
+	PodCountLimit []PodCountLimitSpec `json:"podCountLimit,omitempty"`
+}
+
+

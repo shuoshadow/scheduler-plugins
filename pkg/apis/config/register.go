@@ -44,6 +44,7 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&LoadVariationRiskBalancingArgs{},
 		&NodeResourceTopologyMatchArgs{},
 		&NodeActualLoadArgs{},
+		&PodCountByNodeArgs{},
 	)
 	return nil
 }

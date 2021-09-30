@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scheduler-config
+  namespace: kube-system
+data:
+  scheduler-config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1beta1
+    kind: KubeSchedulerConfiguration
+    leaderElection:
+      leaderElect: true
+      resourceName: default-scheduler
+      resourceNamespace: kube-system
+    profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        filter:
+          enabled:
+          - name: NodeActualLoad
+        score:
+          enabled:
+           - name: LoadVariationRiskBalancing
+          disabled:
+           - name: NodeResourcesBalancedAllocation
+           - name: NodeResourcesLeastAllocated
+      pluginConfig:
+      - name: NodeActualLoad
+        args:
+          watcherAddress: http://load-watcher.ops.svc.cluster.dev:2020
+          calculateType: AVG
+          targetMemoryRate: 87
+      - name: LoadVariationRiskBalancing
+        args:
+          watcherAddress: http://load-watcher.ops.svc.cluster.dev:2020
+          safeVarianceMargin: 1
+          safeVarianceSensitivity: 2

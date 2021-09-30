@@ -19,7 +19,7 @@ BUILDENVVAR=CGO_ENABLED=0
 LOCAL_REGISTRY=localhost:5000/scheduler-plugins
 OPS_REGISTRY=hub.haoduo.vip/ops
 LOCAL_IMAGE=kube-scheduler:latest
-OPS_IMAGE=haoduo-scheduler:latest
+OPS_IMAGE=haoduo-scheduler:v0.1
 LOCAL_CONTROLLER_IMAGE=controller:latest
 
 # RELEASE_REGISTRY is the container registry to push
